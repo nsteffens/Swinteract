@@ -1,0 +1,24 @@
+{
+  "name": "swinteract",
+  "description": "An IVE tool for in-car interaction with CO2 emission data",
+  "main": "index.js",
+  "authors": [
+    "Felix Erdmann",
+    "Laura Meierkort",
+    "Nico Steffens",
+    "Marvin Gehrt"
+  ],
+  "license": "MIT",
+  "homepage": "igi.nstef.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fullpage.js": "https://github.com/alvarotrigo/fullPage.js.git#^2.7.9",
+    "hamsterjs": "https://github.com/monospaced/hamster.js.git#^1.1.2"
+  }
+}
