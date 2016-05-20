@@ -2,31 +2,41 @@
 <html>
 
 	<head>
+
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
 	<!-- CSS -->
-	
+
 		<!-- 	fullpage.js CSS -->
 		<link rel="stylesheet" href="/fullpage.js/jquery.fullPage.css">
 		<link rel="stylesheet" href="/css/custom.css">
-						
-		
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+
 	<!-- SCRIPTS -->
-	
+
 		<!-- 	jQuery -->
 			<script src="/jquery/dist/jquery.min.js"></script>
-	
+
 		<!-- 	Hamster.js	 -->
 			<script src="/hamsterjs/hamster.js"></script>
-		
+
 		<!-- 	fullpage.js -->
 			<script src="/fullpage.js/jquery.fullPage.min.js"></script>
-		
+
+		<!-- 	fullpage.js -->
+			<script src="/jquery-circle-progress/dist/circle-progress.js"></script>
+
 		<!-- 	custom JS	 -->
 			<script src="/js/custom.js"></script>
-				
 
-	</head>	
-	
-	
+		 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+
+
+	</head>
+
+
 	<!-- CONTENT -->
 	<body>
 
@@ -34,18 +44,33 @@
 			<div class="section" id="section1">
 			    <div class="slide" id="slide1" data-anchor="slide1">
 					<div class="intro">
-						<h1>Clickable</h1>
-						<p>
-							You can even click on the navigation and jump directly to another section.
-						</p>
-						<div id="slide_button" style="background-color:white">Slide</div>
+						<h1>Dashboard</h1>
+						<div class="dashboard-circle" style="float:left">
+							<h2>Speed</h2>
+							<div class="circles">
+								<div class="second circle">
+								<div class="overlay">
+									<h1><b>8</b> km/h</h1>
+								</div>
+								</div>
+							</div>
+						</div>
+						<div class="dashboard-circle" style="float:right">
+							<h2>CO2</h2>
+							<div class="circles">
+								<div class="second circle"></div>
+								<div class="overlay">
+									<h3>bla</h3>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-		
+
 			    <div class="slide" id="slide2" data-anchor="slide2">
-					<h1>Slide 2</h1>
+					<div id="map" style="height:100%"></div>
 				</div>
-		
+
 				<div class="slide" id="slide3" data-anchor="slide3">
 					<h1>Slide 3</h1>
 				</div>	<div class="slide" id="slide3" data-anchor="slide3">
@@ -58,5 +83,5 @@
 
 		</div>
 	<body>
-	
+
 </html>
