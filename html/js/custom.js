@@ -4,6 +4,10 @@
 
 */
 
+'use strict'
+
+const swipeSpeed = 50;
+
 $(document).ready(function() {
 	console.log('Loading fullpage.js ...')
 
@@ -43,39 +47,18 @@ $(document).ready(function() {
 	  // Integrate sliding and stuff here so we won't be bugged by back&forward gestures
 
 	  //SWIPE RIGHT
-	  if(slideFinished && event.deltaX > 200){		// 200 Seems to fit quite good..
+	  if(slideFinished && event.deltaX > swipeSpeed){		// 200 Seems to fit quite good..
 		  slideFinished = false;					// We will set it back to true when the afterSlideLoad callback is fired
 		  $.fn.fullpage.moveSlideRight();
 	  }
 
 	  //SWIPE LEFT
-	  if(slideFinished && event.deltaX < -200){		// 200 Seems to fit quite good..
+	  if(slideFinished && event.deltaX < -swipeSpeed){		// 200 Seems to fit quite good..
 		  slideFinished = false;					// We will set it back to true when the afterSlideLoad callback is fired
 		  $.fn.fullpage.moveSlideLeft();
 	  }
 	}, false);
 
-	// Leaflet init
-
-	var mymap = L.map('map').setView([51.505, -0.09], 13);
-
-	L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-	subdomains: 'abcd',
-	maxZoom: 19
-}).addTo(mymap);
-
-// disable mouse scrollWheelZoom on map
-mymap.scrollWheelZoom.disable();
-
-// circle on dashboard
-	$('.second.circle').circleProgress({
-			size: 300,
-	    value: 0.6,
-			startAngle:1.5*Math.PI,
-			fill: { color: '#a3fff4' }
-	}).on('circle-animation-progress', function(event, progress, stepValue) {
-    $("#speedStrong").html(parseInt(100 * stepValue) + '<i>%</i>');
-});
+	
 
 });
