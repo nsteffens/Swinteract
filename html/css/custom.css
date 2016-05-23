@@ -1,9 +1,25 @@
 /*
-	
+
 	Swinteract custom CSS file
-	
-*/	
-	
+
+*/
+
 .section{
+	font-family: 'Open Sans';
 	text-align:center;
+	color: #fcfcfc;
+}
+
+.dashboard-circle {
+	position: relative;
+	width: 300px;
+	margin: 100px;
+}
+
+.overlay {
+	//top:50%;
+	//vertical-align: middle;
+	//text-align:center;
+
+	display:flex;
 }
