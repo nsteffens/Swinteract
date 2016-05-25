@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "fullpage.js": "https://github.com/alvarotrigo/fullPage.js.git#^2.7.9",
-    "hamsterjs": "https://github.com/monospaced/hamster.js.git#^1.1.2"
+    "hamsterjs": "https://github.com/monospaced/hamster.js.git#^1.1.2",
+    "jquery-circle-progress": "^1.1.3"
   }
 }
