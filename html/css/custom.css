@@ -17,9 +17,9 @@
 }
 
 .overlay {
-	//top:50%;
-	//vertical-align: middle;
-	//text-align:center;
+	top:50%;
+	vertical-align: middle;
+	text-align:center;
 
 	display:flex;
 }

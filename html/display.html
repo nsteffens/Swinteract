@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="/fullpage.js/jquery.fullPage.css">
 		<link rel="stylesheet" href="/css/custom.css">
 
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 
 
 	<!-- SCRIPTS -->
@@ -24,7 +24,7 @@
 		<!-- 	fullpage.js -->
 			<script src="/fullpage.js/jquery.fullPage.min.js"></script>
 
-		<!-- 	fullpage.js -->
+		<!-- 	circle-progress.js -->
 			<script src="/jquery-circle-progress/dist/circle-progress.js"></script>
 
 			<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
@@ -47,23 +47,23 @@
 			<div class="section" id="section1">
 			    <div class="slide" id="slide1" data-anchor="slide1">
 					<div class="intro">
-						<h1>Dashboard</h1>
+						<h1 id='statustext'> Loading...</h1>
 						<div class="dashboard-circle" style="float:left">
 							<h2>Speed</h2>
 							<div class="circles">
-								<div class="second circle">
+								<div id="speed_circle">
 								<div class="overlay">
-									<h1><b>8</b> km/h</h1>
+									<h1><b id="speed">0</b> km/h</h1>
 								</div>
 								</div>
 							</div>
 						</div>
 						<div class="dashboard-circle" style="float:right">
-							<h2>CO2</h2>
+							<h2>RPM</h2>
 							<div class="circles">
-								<div class="second circle"></div>
+								<div id="rpm_circle"></div>
 								<div class="overlay">
-									<h3>bla</h3>
+									<h3><b id="rpm">0</b> RPM</h3>
 								</div>
 							</div>
 						</div>

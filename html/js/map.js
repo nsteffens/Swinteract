@@ -17,6 +17,7 @@ $(document).ready(function() {
 
 
 
+/*
   $.getJSON( 'track.json', function( data ) {
     console.log(data);
     mymap.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]]);
@@ -24,5 +25,6 @@ $(document).ready(function() {
       var marker = L.marker([e.geometry.coordinates[1], e.geometry.coordinates[0]]).addTo(mymap);
     });
   });
+*/
 
 });
