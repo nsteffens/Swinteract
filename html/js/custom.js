@@ -22,7 +22,7 @@ google.charts.setOnLoadCallback(drawCurveTypes);
 $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function( statistics ){ 
 		
 	CO2statistics = statistics;	
-
+	
 })
 
 
@@ -162,24 +162,18 @@ function simulateDriving(){
     	// Update RPM
 		$('#rpm').html(rpmValue);		
 		updateRpmDisplay(rpmValue);
-    	
-    	// For CO2:
-    	//console.log(selectedCarData.features[i].properties.phenomenons.CO2.value);
-		
-		// CO2 Screen
-		
+    		
+		// Update CO2 Chart
 		
 		updateCO2Chart(selectedCarData.features[i].properties.phenomenons.CO2.value, i);
 		
-		
-		
-		//Slide1Chart.data.datasets[1].data[i] = selectedCarData.features[i].properties.phenomenons.CO2.value;
-	
+		// Update Gaspedal
+		updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);	
 		
 		if(i == selectedCarData.features.length - 1){
 			
 			$('#statustext').html('Simulation finished.');			
-			
+			clearInterval(drivingLoop);
 		}
 		
 	}, updateInterval);
@@ -229,14 +223,29 @@ function updateCO2Chart(value,i, averageValue){
 		}
     };
 	
-
-		
 	var toBeAdded = [i, CO2statistics.avg, value];
-	console.log(toBeAdded);
-	CO2Chartdata.addRow(toBeAdded);
-	
+	CO2Chartdata.addRow(toBeAdded);	
 	CO2Chart.draw(CO2Chartdata, options)
 	
+}
+
+function updateGasPedal(value){
+	
+    /*
+var skillBar = $('#pedalbox')
+    var skillVal = skillBar.attr("data-progress");
+    
+*/
+    console.log(value);
+    
+    $('#gaspedal').html(Math.floor(value)+'%');
+
+    
+	/*
+skillBar.animate({
+        height: value
+    }, 1500);
+*/
 	
 }
 
