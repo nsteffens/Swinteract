@@ -4,6 +4,7 @@
 $(document).ready(function() {
 
 
+/*
   var mymap = L.map('map').setView([51.95, 7.55], 12);
 
   L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
@@ -14,6 +15,7 @@ $(document).ready(function() {
 
   // disable mouse scrollWheelZoom on map
   mymap.scrollWheelZoom.disable();
+*/
 
 
 

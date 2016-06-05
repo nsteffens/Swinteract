@@ -12,12 +12,25 @@ var updateInterval = 5000; // in milliseconds
 var receivedTracks;
 var selectedCarData;
 
+var CO2Chartdata;
+var CO2Chart;
+var CO2statistics;
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawCurveTypes);
+
+
+$.getJSON("https://envirocar.org/api/stable/statistics/CO2", function( statistics ){ 
+		
+	CO2statistics = statistics;	
+
+})
+
+
 $(document).ready(function() {
 	console.log('Loading fullpage.js ...')
 	
-	var slideFinished = true;	// We need to monitor if the swipe animation has ended so we can start a new swipe
-	
-
+	var slideFinished = true;	// We need to monitor if the swipe animation has ended so we can start a new swipe	
+		
 	$('#fullpage').fullpage({
 // 		anchors: ['firstPage', 'secondPage', '3rdPage'],		// Can be used to rewrite the URL
 		sectionsColor: ['#3c3c3c', '#DE564B', '#EAE1C0'],
@@ -26,7 +39,6 @@ $(document).ready(function() {
 			slideFinished = true;
 		}
 	});
-
 
 	// Add the event listener which gets triggered when using the trackpad
 	$('body')[0].addEventListener('mousewheel', function(event) {
@@ -51,21 +63,20 @@ $(document).ready(function() {
 	  // Integrate sliding and stuff here so we won't be bugged by back&forward gestures
 
 	  //SWIPE RIGHT
-	  if(slideFinished && event.deltaX > swipeSpeed){		// 200 Seems to fit quite good..
+	  if(slideFinished && event.deltaX > swipeSpeed){		
 		  slideFinished = false;					// We will set it back to true when the afterSlideLoad callback is fired
 		  $.fn.fullpage.moveSlideRight();
 	  }
 
 	  //SWIPE LEFT
-	  if(slideFinished && event.deltaX < -swipeSpeed){		// 200 Seems to fit quite good..
+	  if(slideFinished && event.deltaX < -swipeSpeed){
 		  slideFinished = false;					// We will set it back to true when the afterSlideLoad callback is fired
 		  $.fn.fullpage.moveSlideLeft();
 	  }
 	}, false);
 	
-	
 	getTracks(function(tracks){		
-		// Choose a track by random --- CURRENTLY DISABLED!!!
+		// Choose a track by random --- CURRENTLY DISABLED!!! 
 		// We only get 100 tracks per API-call so we chose one of those..
 		
 		receivedTracks = tracks;
@@ -75,24 +86,27 @@ $(document).ready(function() {
 // 		getCarData(tracks[randomTrackIndex].id, function(carData){
 		getCarData(tracks[randomTrackIndex].id, function(carData){
 	
-			console.log(carData);
+			//console.log(carData);
 			
-			selectedCarData = carData;
+// 			selectedCarData = carData;
+			
+			$.getJSON( "js/track.json", function( data ) {
+					
+				selectedCarData = data;
+				simulateDriving();
+				$('#statustext').html('Dashboard');
+				
+				console.log(data);
+				
+			});
 
-			simulateDriving();
-			$('#statustext').html('enviroCar HUD');
-			
+	
 		})
 		
 		
 	});
 	
-	
-	
-	
-
 });
-
 
 function getTracks(done){
 	
@@ -111,7 +125,6 @@ function getTracks(done){
 	})
 }
 
-
 function getCarData(track_id, done){		
 	
 	jQuery.ajax({
@@ -127,14 +140,15 @@ function getCarData(track_id, done){
 	
 }
 
-
-
 function simulateDriving(){
 	
 	// carData is recorded every 5 seconds (calculated by timestamp difference)
 	
 	var i = 0;
-
+	var co2log_data = [];
+	var co2log_label = [];
+	
+	
 	var drivingLoop = setInterval(function(){    	
     	i++;
     	
@@ -151,6 +165,16 @@ function simulateDriving(){
     	
     	// For CO2:
     	//console.log(selectedCarData.features[i].properties.phenomenons.CO2.value);
+		
+		// CO2 Screen
+		
+		
+		updateCO2Chart(selectedCarData.features[i].properties.phenomenons.CO2.value, i);
+		
+		
+		
+		//Slide1Chart.data.datasets[1].data[i] = selectedCarData.features[i].properties.phenomenons.CO2.value;
+	
 		
 		if(i == selectedCarData.features.length - 1){
 			
@@ -178,7 +202,6 @@ function updateSpeedDisplay(value){
 	
 }
 
-
 function updateRpmDisplay(value){
 	
 	var rpmCircle = $('#rpm_circle');
@@ -191,3 +214,52 @@ function updateRpmDisplay(value){
 			
 	
 }
+
+function updateCO2Chart(value,i, averageValue){
+	
+	var options = {
+    	hAxis: {
+        	title: 'Time'
+		},
+		vAxis: {
+        	title: 'CO2 Emission (kg/h)'
+		},
+		series: {
+        	1: {curveType: 'function'}
+		}
+    };
+	
+
+		
+	var toBeAdded = [i, CO2statistics.avg, value];
+	console.log(toBeAdded);
+	CO2Chartdata.addRow(toBeAdded);
+	
+	CO2Chart.draw(CO2Chartdata, options)
+	
+	
+}
+
+function drawCurveTypes() {
+
+	CO2Chartdata = new google.visualization.DataTable();
+    CO2Chartdata.addColumn('number', 'X');
+    CO2Chartdata.addColumn('number', 'Average');
+    CO2Chartdata.addColumn('number', 'Current');
+      	
+      var options = {
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Popularity'
+        },
+        series: {
+          1: {curveType: 'function'}
+        }
+      };
+
+      CO2Chart = new google.visualization.LineChart(document.getElementById('CO2Chart'));
+            
+      CO2Chart.draw(CO2Chartdata, options);
+    }
