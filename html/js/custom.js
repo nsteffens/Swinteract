@@ -153,22 +153,25 @@ function simulateDriving(){
     	i++;
     	
     	var speedValue 	= Math.floor(selectedCarData.features[i].properties.phenomenons.Speed.value);
-    	var rpmValue 	= Math.floor(selectedCarData.features[i].properties.phenomenons.Rpm.value); 
+//     	var rpmValue 	= Math.floor(selectedCarData.features[i].properties.phenomenons.Rpm.value); 
+    	var co2Value 	= selectedCarData.features[i].properties.phenomenons.CO2.value.toFixed(2);
+    	
+    	console.log(parseFloat(co2Value));
     	
     	// Update Speed
     	$('#speed').html(speedValue);
     	updateSpeedDisplay(speedValue);
     	
     	// Update RPM
-		$('#rpm').html(rpmValue);		
-		updateRpmDisplay(rpmValue);
+		$('#Co2_display').html(co2Value);
+		updateCo2Display(parseFloat(co2Value));
     		
 		// Update CO2 Chart
 		
 		updateCO2Chart(selectedCarData.features[i].properties.phenomenons.CO2.value, i);
 		
 		// Update Gaspedal
-		updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);	
+		// updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);	
 		
 		if(i == selectedCarData.features.length - 1){
 			
@@ -196,15 +199,15 @@ function updateSpeedDisplay(value){
 	
 }
 
-function updateRpmDisplay(value){
+function updateCo2Display(value){
 	
-	var rpmCircle = $('#rpm_circle');
+	var co2Circle = $('#co2_circle');
 	
-	// Let 6000 RPM be the max displayable speed --> Calculate Percentage of 180
-	var setValue = value / 6000;
-	var oldValue = rpmCircle.circleProgress('value');
+	// Let 2x avg Co2 kg/h be the Maximum to have an indicator at the bottom
+	var setValue = value / (2*CO2statistics.avg);
+	var oldValue = co2Circle.circleProgress('value');
 	
-	rpmCircle.circleProgress({value: setValue, animationStartValue: oldValue});
+	co2Circle.circleProgress({value: setValue, animationStartValue: oldValue});
 			
 	
 }

@@ -50,37 +50,33 @@
 			    <div class="slide" id="slide1" data-anchor="slide1">
 					<div class="intro">
 						<h1 id='statustext'> Loading...</h1>
-						<div class="dashboard-circle" width="40%" style="float:left">
-							<h2>Speed</h2>
+						
+					<!-- Left (Speedometer)	-->
+					<div class="dashboard-left">	
+						<div class="dashboard-circle" width="40%">
+							<h2>Speed in km/h</h2>
 							<div class="circles">
 								<div id="speed_circle">
-								<div class="overlay">
-									<h1><b id="speed">0</b> km/h</h1>
+								<!-- This text contains the current speed at runtime	-->
+								<h1 id="speed">0</h1>
 								</div>
+							</div>
+						</div>
+					</div>
+			
+						<!--	Right (CO2 Emissions) -->
+						<div class="dashboard-right">
+							<div class="dashboard-circle" width="40%">
+								<h2>CO<sub>2</sub> in kg/h</h2>
+								<div class="circles">
+									<div id="co2_circle"></div>
+									<div class="overlay">
+										<h3 id="Co2_display">0</h3>
+									</div>
 								</div>
 							</div>
 						</div>
 						
-						<h1><b id="gaspedal">0</b></h1>
-<!--
-						<div class="gaspedal">
-							<div class="outer">
-								<div class="inner" id="pedalbox" data-progress="57%">
-									<div></div>
-								</div>        
-							</div>
-						</div>
--->
-						
-						<div class="dashboard-circle" width="40%" style="float:right">
-							<h2>RPM</h2>
-							<div class="circles">
-								<div id="rpm_circle"></div>
-								<div class="overlay">
-									<h3><b id="rpm">0</b> RPM</h3>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 
