@@ -7,7 +7,7 @@
 'use strict'
 
 var swipeSpeed = 50;
-var updateInterval = 5000; // in milliseconds
+var updateInterval = 2000; // in milliseconds
 
 var receivedTracks;
 var selectedCarData;
@@ -203,8 +203,8 @@ function updateCo2Display(value){
 	
 	var co2Circle = $('#co2_circle');
 	
-	// Let 2x avg Co2 kg/h be the Maximum to have an indicator at the bottom
-	var setValue = value / (2*CO2statistics.avg);
+	// Let 3x avg Co2 kg/h be the Maximum to have an indicator at the bottom
+	var setValue = value / (3*CO2statistics.avg);
 	var oldValue = co2Circle.circleProgress('value');
 	
 	co2Circle.circleProgress({value: setValue, animationStartValue: oldValue});

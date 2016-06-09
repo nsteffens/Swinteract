@@ -14,11 +14,12 @@ $(document).ready(function() {
   });
 
 
+
   $('#co2_circle').circleProgress({
   			size: 300,
   			value: 0.0,
   			startAngle:1.5*Math.PI,
-  			fill: { color: '#a3fff4' }
+  			fill:{ image: "/img/co2_gradient.png"} 
   	}).on('circle-animation-progress', function(event, progress, stepValue) {
       $("#speedStrong").html(parseInt(100 * stepValue) + '<i>%</i>');
   }); 
@@ -52,7 +53,7 @@ $(document).ready(function() {
 		  ctx.font = "bold " + s / 3 + "px sans-serif";
 		  ctx.textAlign = 'center';
 		  ctx.textBaseline = 'middle';
-		  ctx.fillStyle = fill;
+		  ctx.fillStyle = $('#speed_circle').data('circle-progress').arcFill;
 		  ctx.fillText(sv, s / 2, s / 2);
 		  ctx.restore();
 });
