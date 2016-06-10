@@ -25,32 +25,47 @@
 }
 
 #CO2Chart{
-	
+
 	padding: 5%;
 	height: 60%;
 }
 
 #speed{
-	
+
 	display: none;
-	
+
 }
 
 #Co2_display{
-	
+
 	display: none;
-	
+
 }
 
 .dashboard-left{
-	
+
 	display: inline-block;
 	padding: 5%;
-	
+
 }
 
 .dashboard-right{
-	
+
 	display: inline-block;
 	padding: 5%;
+}
+
+#map {
+	height: 75%;
+	padding: 20px;
+}
+
+#map-dashboard {
+	height: 25%;
+}
+
+.map-dashboard-element {
+	display: inline-block;
+	margin-left: 100px;
+	margin-right: 100px;
 }
