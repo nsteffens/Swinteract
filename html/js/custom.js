@@ -59,7 +59,7 @@ $(document).ready(function() {
         }
     });
 
-    mymap = L.map('map').setView([51.95, 7.55], 12);
+    mymap = L.map('map').setView([51.95, 7.55], 13);
 
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -210,11 +210,28 @@ function simulateDriving() {
 
         // Update Gaspedal
         // updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);
-
         if (i == selectedCarData.features.length - 1) {
-
+            // Simulation is finished
             $('#statustext').html('Simulation finished.');
             clearInterval(drivingLoop);
+
+            // create statistics JSON
+            var statistics = JSON.parse('{ ' +
+              '"track_id": "' + selectedCarData.properties.id + '",' +
+              '"start": "' + selectedCarData.features[0].properties.time + '",' +
+              '"end": "' + selectedCarData.features[selectedCarData.features.length - 1].properties.time + '",' +
+              //'"stock_features": "' + JSON.stringify(selectedCarData.features) + '",' +
+              //'"stock_properties": "' + JSON.stringify(selectedCarData.properties) + '",' +
+              '"statistics": {' +
+                '"average_speed": "' + parseFloat(calculateAverageSpeed()) + '",' +
+                '"average_CO2": "' + parseFloat(calculateAverageCO2()) + '",' +
+                '"average_consumption": "' + parseFloat(calculateAverageConsumption()) + '"' +
+              '}' +
+            '}')
+
+            // publish statistics
+            var url = 'data:text/json;charset=utf8,' + encodeURIComponent(JSON.stringify(statistics));
+            window.open(url, 'statistic');
         }
 
         // Update map
@@ -238,7 +255,7 @@ function simulateDriving() {
             cursorMarker.setLatLng(pos)
         }
 
-        mymap.fitBounds(polyline.getBounds());
+        mymap.panTo(pos);
 
     }, updateInterval);
 
@@ -348,7 +365,8 @@ function drawCurveTypes() {
 }
 
 function calculateAverageSpeed(speed) {
-  averageSpeedArr.push(speed)
+  if (speed)
+    averageSpeedArr.push(speed)
   var sum = 0;
   for( var i = 0; i < averageSpeedArr.length; i++ ){
       sum += averageSpeedArr[i]
@@ -358,7 +376,8 @@ function calculateAverageSpeed(speed) {
 }
 
 function calculateAverageCO2(co2) {
-  averageCO2Arr.push(parseFloat(co2))
+  if (co2)
+    averageCO2Arr.push(parseFloat(co2))
   var sum = 0;
   for( var i = 0; i < averageCO2Arr.length; i++ ){
       sum += averageCO2Arr[i]
@@ -368,7 +387,8 @@ function calculateAverageCO2(co2) {
 }
 
 function calculateAverageConsumption(consumption) {
-  averageConsArr.push(parseFloat(consumption))
+  if (consumption)
+    averageConsArr.push(parseFloat(consumption))
   var sum = 0;
   for( var i = 0; i < averageConsArr.length; i++ ){
       sum += averageConsArr[i]
