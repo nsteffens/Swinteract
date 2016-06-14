@@ -52,9 +52,6 @@ $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function(statistics
 $(document).ready(function() {
     console.log('Loading fullpage.js ...')
 
-  //Set some options later
-  $('body').swipe( {fingers:2} );
-
     $('#fullpage').fullpage({
         // 		anchors: ['firstPage', 'secondPage', '3rdPage'],		// Can be used to rewrite the URL
         sectionsColor: ['#3c3c3c', '#DE564B', '#EAE1C0'],
