@@ -7,7 +7,8 @@
 'use strict'
 
 var swipeSpeed = 50;
-var updateInterval = 2000; // in milliseconds
+var verticalSwipeSpeed = 10;
+var updateInterval = 5000; // in milliseconds
 
 var receivedTracks;
 var selectedCarData;
@@ -37,6 +38,9 @@ var averageCO2Arr = [];
 var averageCons;
 var averageConsArr = [];
 
+var slideFinished = true; // We need to monitor if the swipe animation has ended so we can start a new swipe
+var locking_swipe = false;
+
 
 $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function(statistics) {
 
@@ -48,7 +52,8 @@ $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function(statistics
 $(document).ready(function() {
     console.log('Loading fullpage.js ...')
 
-    var slideFinished = true; // We need to monitor if the swipe animation has ended so we can start a new swipe
+  //Set some options later
+  $('body').swipe( {fingers:2} );
 
     $('#fullpage').fullpage({
         // 		anchors: ['firstPage', 'secondPage', '3rdPage'],		// Can be used to rewrite the URL
@@ -58,6 +63,17 @@ $(document).ready(function() {
             slideFinished = true;
         }
     });
+
+
+
+
+
+
+
+
+
+
+
 
     mymap = L.map('map').setView([51.95, 7.55], 13);
 
@@ -70,6 +86,8 @@ $(document).ready(function() {
     mymap.scrollWheelZoom.disable();
 
     // Add the event listener which gets triggered when using the trackpad
+
+
     $('body')[0].addEventListener('mousewheel', function(event) {
         // We don't want to scroll below zero or above the width and height
         var maxX = this.scrollWidth - this.offsetWidth;
@@ -88,21 +106,44 @@ $(document).ready(function() {
             this.scrollTop = Math.max(0, Math.min(maxY, this.scrollTop + event.deltaY));
         }
 
+		// Wenn Swipe nach unten registriert wird -> 2sec Zeit Geste zu finishen
+		// --> Funktion schreiben, die wartet und auf Scroll nach rechts wartet
+		// In der Zeit Seitenwechsel sperren!
 
+		if(locking_swipe = true){
+			
+			LockingListener(event)
+		}
+
+		if(slideFinished == true && event.deltaY < -verticalSwipeSpeed){
+			
+			locking_swipe = true;
+			slideFinished = false;	
+						
+			setTimeout(function(){
+				console.log('times over')
+				slideFinished = true;
+				locking_swipe = false;
+			}, 2000)
+			
+		}
+
+		
         // Integrate sliding and stuff here so we won't be bugged by back&forward gestures
 
         //SWIPE RIGHT
-        if (slideFinished && event.deltaX > swipeSpeed) {
+        if (slideFinished == true && event.deltaX > swipeSpeed) {
             slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
             $.fn.fullpage.moveSlideRight();
         }
 
         //SWIPE LEFT
-        if (slideFinished && event.deltaX < -swipeSpeed) {
+        if (slideFinished == true && event.deltaX < -swipeSpeed) {
             slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
             $.fn.fullpage.moveSlideLeft();
-        }
+        }        
     }, false);
+
 
     getTracks(function(tracks) {
         // Choose a track by random --- CURRENTLY DISABLED!!!
@@ -136,6 +177,20 @@ $(document).ready(function() {
     });
 
 });
+
+
+function LockingListener(givenEvent){
+			
+		
+		if (locking_swipe == true && givenEvent.deltaX < -swipeSpeed) {
+			console.log('yes!')
+        }
+		
+			
+			
+}
+
+
 
 function getTracks(done) {
 
