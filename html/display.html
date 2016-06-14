@@ -17,7 +17,7 @@
 
 		<!-- 	jQuery -->
 			<script src="/jquery/dist/jquery.min.js"></script>
-			
+
 		<!-- 	fullpage.js -->
 			<script src="/fullpage.js/jquery.fullPage.min.js"></script>
 
@@ -25,14 +25,15 @@
 			<script src="/jquery-circle-progress/dist/circle-progress.js"></script>
 
 		<!-- 	Leaflet CDN -->
-			<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-		
-		<!-- 	google charts.js -->
-			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>	
-			
-		<!-- 	custom JS	 -->
+		<script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
 
-			<script src="/js/map.js" async></script>
+
+			<script src="/js/leaflet.rotatedMarker.js"></script>
+
+		<!-- 	google charts.js -->
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+		<!-- 	custom JS	 -->
 
 			<script src="/js/dashboard.js" async></script>
 
@@ -50,37 +51,33 @@
 			    <div class="slide" id="slide1" data-anchor="slide1">
 					<div class="intro">
 						<h1 id='statustext'> Loading...</h1>
-						<div class="dashboard-circle" width="40%" style="float:left">
-							<h2>Speed</h2>
+
+					<!-- Left (Speedometer)	-->
+					<div class="dashboard-left">
+						<div class="dashboard-circle" width="40%">
+							<h2>Speed in km/h</h2>
 							<div class="circles">
 								<div id="speed_circle">
-								<div class="overlay">
-									<h1><b id="speed">0</b> km/h</h1>
-								</div>
-								</div>
-							</div>
-						</div>
-						
-						<h1><b id="gaspedal">0</b></h1>
-<!--
-						<div class="gaspedal">
-							<div class="outer">
-								<div class="inner" id="pedalbox" data-progress="57%">
-									<div></div>
-								</div>        
-							</div>
-						</div>
--->
-						
-						<div class="dashboard-circle" width="40%" style="float:right">
-							<h2>RPM</h2>
-							<div class="circles">
-								<div id="rpm_circle"></div>
-								<div class="overlay">
-									<h3><b id="rpm">0</b> RPM</h3>
+								<!-- This text contains the current speed at runtime	-->
+								<h1 id="speed">0</h1>
 								</div>
 							</div>
 						</div>
+					</div>
+
+						<!--	Right (CO2 Emissions) -->
+						<div class="dashboard-right">
+							<div class="dashboard-circle" width="40%">
+								<h2>CO<sub>2</sub> in kg/h</h2>
+								<div class="circles">
+									<div id="co2_circle"></div>
+									<div class="overlay">
+										<h3 id="Co2_display">0</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
 
@@ -93,12 +90,29 @@
 
 				<div class="slide" id="slide3" data-anchor="slide3">
 					<h1>Consumption</h1>
-					
+
 										  <div id="FuelChart"></div>
 
-				</div>	
+				</div>
 				<div class="slide" id="slide4" data-anchor="slide3">
-					<h1>Slide 4</h1>
+					<div id="map"></div>
+					<div id="map-dashboard">
+						<div class="map-dashboard-element">
+							<h4>Speed</h4>
+							<h5 id="map-dashboard-speed"></h5>
+							<h5 id="map-dashboard-speed-average"></h5>
+						</div>
+						<div class="map-dashboard-element">
+							<h4>CO2</h4>
+							<h5 id="map-dashboard-co2"></h5>
+							<h5 id="map-dashboard-co2-average"></h5>
+						</div>
+						<div class="map-dashboard-element">
+							<h4>Consumption</h4>
+							<h5 id="map-dashboard-consumption"></h5>
+							<h5 id="map-dashboard-consumption-average"></h5>
+						</div>
+					</div>
 				</div>
 				<div class="slide" id="slide5" data-anchor="slide3">
 					<h1>Slide 5</h1>
