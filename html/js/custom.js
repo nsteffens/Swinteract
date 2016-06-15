@@ -18,6 +18,11 @@ var CO2Chartdata = [];
 var CO2Chart;
 var CO2statistics;
 
+var FuelChart;
+var AvgData_Fuel = [];
+var FuelChartdata = [];
+var Fuelstatistics;
+
 var mymap;
 var polyline;
 var cursor = L.icon({
@@ -46,6 +51,12 @@ $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function(statistics
 
 })
 
+$.getJSON("https://envirocar.org/api/stable/statistics/Consumption", function(statistics) {
+
+    Fuelstatistics = statistics;
+	
+})
+
 
 $(document).ready(function() {
     console.log('Loading fullpage.js ...')
@@ -72,9 +83,24 @@ $(document).ready(function() {
 			},
 			xaxis: {
 				show: false
+			}
+	});
+
+	// Initialize flot.js for Fuel Chart
+		
+	FuelChart = $.plot("#FuelChart", [[]], {
+			series: {
+				shadowSize: 0,	// Drawing is faster without shadows
+				curvedLines: {
+                              apply: true,
+                              active: true,
+                              monotonicFit: true
+                     }
 			},
-			color: ['#ffffff','#00FF40']
-		});
+			xaxis: {
+				show: false
+			}
+	});
 
     mymap = L.map('map').setView([51.95, 7.55], 13);
 
@@ -321,7 +347,7 @@ function simulateDriving() {
         var co2stringAVG = 'Ø ' + calculateAverageCO2(co2Value).toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit
         $('#map-dashboard-co2').html(co2Value + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit);
         $('#map-dashboard-co2-average').html(co2stringAVG);
-        $('#co2chart-co2-average').html(co2stringAVG);
+        $('#co2chart-co2-average').html('Ø ' + CO2statistics.avg.toFixed(2)+ ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit);
         $('#co2chart-co2').html(co2Value + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit);
 
         updateCo2Display(parseFloat(co2Value));
@@ -329,10 +355,17 @@ function simulateDriving() {
         // Update CO2 Chart
 
         updateCO2Chart(selectedCarData.features[i].properties.phenomenons.CO2.value, i);
-
+		
+		updateFuelChart(selectedCarData.features[i].properties.phenomenons.Consumption.value,i)
+        
+        
         // Update consumption
+
         $('#map-dashboard-consumption').html(selectedCarData.features[i].properties.phenomenons.Consumption.value.toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
         $('#map-dashboard-consumption-average').html('Ø ' + calculateAverageConsumption(selectedCarData.features[i].properties.phenomenons.Consumption.value).toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
+        
+        $('#fuelchart-fuel').html(selectedCarData.features[i].properties.phenomenons.Consumption.value.toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
+        $('#fuelchart-fuel-average').html('Ø ' + Fuelstatistics.avg.toFixed(2)+' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
 
         // Update Gaspedal
         // updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);
@@ -433,21 +466,37 @@ function updateCo2Display(value) {
 
 }
 
-function updateCO2Chart(value, i, averageValue) {
+function updateCO2Chart(value, i) {
 	
 	AvgData_CO2.push([i,CO2statistics.avg]);
 
 	CO2Chartdata.push([i,value]);
 
-	var newPlotData = [ { label: "CO2 Emission in kg/h", data: CO2Chartdata },
-						{ label: "Avg Emission of all Users", data: AvgData_CO2 } ]
+	var newPlotData = [ { label: "CO2 Emission in kg/h", data: CO2Chartdata, color:'#A9CF54' },
+						{ label: "Avg Emission of all Users", data: AvgData_CO2, color:'04BFBF' } ]
     
 	CO2Chart.setData(newPlotData);    
 	CO2Chart.setupGrid();
 	CO2Chart.draw();
 
-
 }
+
+function updateFuelChart(value, i) {
+	
+	// TODO: Find out avg of fuel consumption
+ 	AvgData_Fuel.push([i,Fuelstatistics.avg]);
+	
+ 	FuelChartdata.push([i,value]);
+
+	var newFuelData = [ { label: "Fuel Consumption in l/h", data: FuelChartdata, color:'#F7E967' },
+						{ label: "Avg Consumption of all Users", data: AvgData_Fuel, color:'04BFBF' } ]
+    
+	FuelChart.setData(newFuelData);    
+	FuelChart.setupGrid();
+	FuelChart.draw();
+	
+}
+
 
 function updateGasPedal(value) {
 

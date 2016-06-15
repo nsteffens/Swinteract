@@ -36,6 +36,12 @@
 	height: 60%;
 }
 
+#FuelChart{
+
+	margin: 5%;
+	height: 60%;
+}
+
 #speed{
 
 	display: none;
@@ -69,8 +75,10 @@
 	height: 25%;
 }
 
-.map-dashboard-element {
+.dashboard-element {
 	display: inline-block;
 	margin-left: 100px;
 	margin-right: 100px;
 }
+
+
