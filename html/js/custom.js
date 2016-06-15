@@ -13,13 +13,10 @@ var updateInterval = 5000; // in milliseconds
 var receivedTracks;
 var selectedCarData;
 
-var CO2Chartdata;
+var AvgData_CO2 = [];
+var CO2Chartdata = [];
 var CO2Chart;
 var CO2statistics;
-google.charts.load('current', {
-    packages: ['corechart', 'line']
-});
-google.charts.setOnLoadCallback(drawCurveTypes);
 
 var mymap;
 var polyline;
@@ -61,6 +58,23 @@ $(document).ready(function() {
             slideFinished = true;
         }
     });
+
+	// Initialize flot.js for CO2 Chart
+		
+	CO2Chart = $.plot("#CO2Chart", [[]], {
+			series: {
+				shadowSize: 0,	// Drawing is faster without shadows
+				curvedLines: {
+                              apply: true,
+                              active: true,
+                              monotonicFit: true
+                     }
+			},
+			xaxis: {
+				show: false
+			},
+			color: ['#ffffff','#00FF40']
+		});
 
     mymap = L.map('map').setView([51.95, 7.55], 13);
 
@@ -132,7 +146,6 @@ $(document).ready(function() {
                 
                
     }, false);
-
 
     getTracks(function(tracks) {
         // Choose a track by random --- CURRENTLY DISABLED!!!
@@ -299,13 +312,17 @@ function simulateDriving() {
         // Update Speed
         $('#speed').html(speedValue);
         $('#map-dashboard-speed').html(speedValue + ' ' + selectedCarData.features[i].properties.phenomenons.Speed.unit);
+       
         $('#map-dashboard-speed-average').html('Ø ' + Math.floor(calculateAverageSpeed(speedValue)) + ' ' + selectedCarData.features[i].properties.phenomenons.Speed.unit);
         updateSpeedDisplay(speedValue);
 
         // Update Co2
         $('#Co2_display').html(co2Value);
+        var co2stringAVG = 'Ø ' + calculateAverageCO2(co2Value).toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit
         $('#map-dashboard-co2').html(co2Value + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit);
-        $('#map-dashboard-co2-average').html('Ø ' + calculateAverageCO2(co2Value).toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit);
+        $('#map-dashboard-co2-average').html(co2stringAVG);
+        $('#co2chart-co2-average').html(co2stringAVG);
+        $('#co2chart-co2').html(co2Value + ' ' + selectedCarData.features[i].properties.phenomenons.CO2.unit);
 
         updateCo2Display(parseFloat(co2Value));
 
@@ -319,6 +336,11 @@ function simulateDriving() {
 
         // Update Gaspedal
         // updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);
+        
+		// Update map
+        
+        updateMap(i);
+        
         if (i == selectedCarData.features.length - 1) {
             // Simulation is finished
             $('#statustext').html('Simulation finished.');
@@ -343,8 +365,18 @@ function simulateDriving() {
             window.open(url, 'statistic');
         }
 
-        // Update map
-        var lat = selectedCarData.features[i].geometry.coordinates[1];
+
+
+    }, updateInterval);
+
+    // Use this to stop the loop:
+    //clearInterval(drivingLoop);
+
+}
+
+function updateMap(i){
+	
+	var lat = selectedCarData.features[i].geometry.coordinates[1];
         var lon = selectedCarData.features[i].geometry.coordinates[0];
 
         var pos = L.latLng(lat, lon)
@@ -365,13 +397,9 @@ function simulateDriving() {
         }
 
         mymap.panTo(pos);
-
-    }, updateInterval);
-
-    // Use this to stop the loop:
-    //clearInterval(drivingLoop);
-
+	
 }
+
 
 function updateSpeedDisplay(value) {
 
@@ -406,24 +434,18 @@ function updateCo2Display(value) {
 }
 
 function updateCO2Chart(value, i, averageValue) {
+	
+	AvgData_CO2.push([i,CO2statistics.avg]);
 
-    var options = {
-        hAxis: {
-            title: 'Time'
-        },
-        vAxis: {
-            title: 'CO2 Emission (kg/h)'
-        },
-        series: {
-            1: {
-                curveType: 'function'
-            }
-        }
-    };
+	CO2Chartdata.push([i,value]);
 
-    var toBeAdded = [i, CO2statistics.avg, value];
-    CO2Chartdata.addRow(toBeAdded);
-    CO2Chart.draw(CO2Chartdata, options)
+	var newPlotData = [ { label: "CO2 Emission in kg/h", data: CO2Chartdata },
+						{ label: "Avg Emission of all Users", data: AvgData_CO2 } ]
+    
+	CO2Chart.setData(newPlotData);    
+	CO2Chart.setupGrid();
+	CO2Chart.draw();
+
 
 }
 
@@ -434,7 +456,6 @@ var skillBar = $('#pedalbox')
     var skillVal = skillBar.attr("data-progress");
 
 */
-    console.log(value);
 
     $('#gaspedal').html(Math.floor(value) + '%');
 
@@ -445,32 +466,6 @@ skillBar.animate({
     }, 1500);
 */
 
-}
-
-function drawCurveTypes() {
-
-    CO2Chartdata = new google.visualization.DataTable();
-    CO2Chartdata.addColumn('number', 'X');
-    CO2Chartdata.addColumn('number', 'Average');
-    CO2Chartdata.addColumn('number', 'Current');
-
-    var options = {
-        hAxis: {
-            title: 'Time'
-        },
-        vAxis: {
-            title: 'Popularity'
-        },
-        series: {
-            1: {
-                curveType: 'function'
-            }
-        }
-    };
-
-    CO2Chart = new google.visualization.LineChart(document.getElementById('CO2Chart'));
-
-    CO2Chart.draw(CO2Chartdata, options);
 }
 
 function calculateAverageSpeed(speed) {
