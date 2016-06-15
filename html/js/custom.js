@@ -38,8 +38,9 @@ var averageCO2Arr = [];
 var averageCons;
 var averageConsArr = [];
 
-var slideFinished = true; // We need to monitor if the swipe animation has ended so we can start a new swipe
-var locking_swipe = false;
+var slideFinished = true; 	// We need to monitor if the swipe animation has ended so we can start a new swipe
+var locking_swipe = false; 	// Indicator if vertical swipe happend to register L - Gesture
+var isLocked = false;		// Indicator to see if the Screen has been locked
 
 
 $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function(statistics) {
@@ -61,17 +62,6 @@ $(document).ready(function() {
         }
     });
 
-
-
-
-
-
-
-
-
-
-
-
     mymap = L.map('map').setView([51.95, 7.55], 13);
 
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
@@ -83,7 +73,6 @@ $(document).ready(function() {
     mymap.scrollWheelZoom.disable();
 
     // Add the event listener which gets triggered when using the trackpad
-
 
     $('body')[0].addEventListener('mousewheel', function(event) {
         // We don't want to scroll below zero or above the width and height
@@ -102,17 +91,19 @@ $(document).ready(function() {
             this.scrollLeft = Math.max(0, Math.min(maxX, this.scrollLeft + event.deltaX));
             this.scrollTop = Math.max(0, Math.min(maxY, this.scrollTop + event.deltaY));
         }
-
+		
 		// Wenn Swipe nach unten registriert wird -> 2sec Zeit Geste zu finishen
 		// --> Funktion schreiben, die wartet und auf Scroll nach rechts wartet
 		// In der Zeit Seitenwechsel sperren!
 
-		if(locking_swipe = true){
+		if(slideFinished == false && locking_swipe == true){
 			
-			LockingListener(event)
+			LockingListener(event);
+			return;
 		}
 
 		if(slideFinished == true && event.deltaY < -verticalSwipeSpeed){
+
 			
 			locking_swipe = true;
 			slideFinished = false;	
@@ -125,7 +116,6 @@ $(document).ready(function() {
 			
 		}
 
-		
         // Integrate sliding and stuff here so we won't be bugged by back&forward gestures
 
         //SWIPE RIGHT
@@ -138,7 +128,9 @@ $(document).ready(function() {
         if (slideFinished == true && event.deltaX < -swipeSpeed) {
             slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
             $.fn.fullpage.moveSlideLeft();
-        }        
+        } 
+                
+               
     }, false);
 
 
@@ -178,16 +170,81 @@ $(document).ready(function() {
 
 function LockingListener(givenEvent){
 			
-		
 		if (locking_swipe == true && givenEvent.deltaX < -swipeSpeed) {
-			console.log('yes!')
+			
+			
+			if(isLocked == true){
+				
+				locking_swipe = false;
+				isLocked = false;
+				slideFinished = false;
+				
+				$('body').fadeIn(function(){
+					
+					slideFinished = true;
+					
+				});
+
+				return;
+
+			}else{
+			
+				locking_swipe = false;
+			
+			
+				$('body').fadeOut(function(){
+				
+				isLocked = true;				
+				slideFinished = false;
+				
+				// We need an Event listener to listen for the unlock gesture
+				
+				$('.fp-enabled')[0].addEventListener('mousewheel', function(event){
+					
+					var maxX = this.scrollWidth - this.offsetWidth;
+					var maxY = this.scrollHeight - this.offsetHeight;
+
+					// Same as above
+					
+					if (this.scrollLeft + event.deltaX < 0 ||
+						this.scrollLeft + event.deltaX > maxX ||
+						this.scrollTop + event.deltaY < 0 ||
+						this.scrollTop + event.deltaY > maxY) {
+
+						event.preventDefault();
+
+						// Manually set the scroll to the boundary
+						this.scrollLeft = Math.max(0, Math.min(maxX, this.scrollLeft + event.deltaX));
+						this.scrollTop = Math.max(0, Math.min(maxY, this.scrollTop + event.deltaY));
+					}
+		
+					if(slideFinished == false && locking_swipe == true){
+			
+						LockingListener(event);
+						return;
+						
+					}
+
+					if(slideFinished == true && event.deltaY < -verticalSwipeSpeed){
+			
+						locking_swipe = true;
+						slideFinished = false;	
+						
+						setTimeout(function(){
+							slideFinished = true;
+							locking_swipe = false;
+						}, 2000)
+						
+						return;
+					}
+					
+				})
+									
+			});
+			}
         }
 		
-			
-			
 }
-
-
 
 function getTracks(done) {
 
