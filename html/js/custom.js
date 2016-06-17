@@ -54,7 +54,7 @@ $.getJSON("https://envirocar.org/api/stable/statistics/CO2", function(statistics
 $.getJSON("https://envirocar.org/api/stable/statistics/Consumption", function(statistics) {
 
     Fuelstatistics = statistics;
-	
+
 })
 
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
     });
 
 	// Initialize flot.js for CO2 Chart
-		
+
 	CO2Chart = $.plot("#CO2Chart", [[]], {
 			series: {
 				shadowSize: 0,	// Drawing is faster without shadows
@@ -88,7 +88,7 @@ $(document).ready(function() {
 	});
 
 	// Initialize flot.js for Fuel Chart
-		
+
 	FuelChart = $.plot("#FuelChart", [[]], {
 			series: {
 				shadowSize: 0,	// Drawing is faster without shadows
@@ -103,7 +103,7 @@ $(document).ready(function() {
 			}
 	});
 
-    mymap = L.map('map').setView([51.95, 7.55], 13);
+    mymap = L.map('map').setView([51.95, 7.55], 15);
 
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -132,29 +132,29 @@ $(document).ready(function() {
             this.scrollLeft = Math.max(0, Math.min(maxX, this.scrollLeft + event.deltaX));
             this.scrollTop = Math.max(0, Math.min(maxY, this.scrollTop + event.deltaY));
         }
-		
+
 		// Wenn Swipe nach unten registriert wird -> 2sec Zeit Geste zu finishen
 		// --> Funktion schreiben, die wartet und auf Scroll nach rechts wartet
 		// In der Zeit Seitenwechsel sperren!
 
 		if(slideFinished == false && locking_swipe == true){
-			
+
 			LockingListener(event);
 			return;
 		}
 
 		if(slideFinished == true && event.deltaY < -verticalSwipeSpeed){
 
-			
+
 			locking_swipe = true;
-			slideFinished = false;	
-						
+			slideFinished = false;
+
 			setTimeout(function(){
 				//console.log('times over')
 				slideFinished = true;
 				locking_swipe = false;
 			}, 2000)
-			
+
 		}
 
         // Integrate sliding and stuff here so we won't be bugged by back&forward gestures
@@ -169,9 +169,9 @@ $(document).ready(function() {
         if (slideFinished == true && event.deltaX < -swipeSpeed) {
             slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
             $.fn.fullpage.moveSlideLeft();
-        } 
-                
-               
+        }
+
+
     }, false);
 
     getTracks(function(tracks) {
@@ -208,43 +208,43 @@ $(document).ready(function() {
 });
 
 function LockingListener(givenEvent){
-			
+
 		if (locking_swipe == true && givenEvent.deltaX < -swipeSpeed) {
-			
-			
+
+
 			if(isLocked == true){
-				
+
 				locking_swipe = false;
 				isLocked = false;
 				slideFinished = false;
-				
+
 				$('body').fadeIn(function(){
-					
+
 					slideFinished = true;
-					
+
 				});
 
 				return;
 
 			}else{
-			
+
 				locking_swipe = false;
-			
-			
+
+
 				$('body').fadeOut(function(){
-				
-				isLocked = true;				
+
+				isLocked = true;
 				slideFinished = false;
-				
+
 				// We need an Event listener to listen for the unlock gesture
-				
+
 				$('.fp-enabled')[0].addEventListener('mousewheel', function(event){
-					
+
 					var maxX = this.scrollWidth - this.offsetWidth;
 					var maxY = this.scrollHeight - this.offsetHeight;
 
 					// Same as above
-					
+
 					if (this.scrollLeft + event.deltaX < 0 ||
 						this.scrollLeft + event.deltaX > maxX ||
 						this.scrollTop + event.deltaY < 0 ||
@@ -256,33 +256,33 @@ function LockingListener(givenEvent){
 						this.scrollLeft = Math.max(0, Math.min(maxX, this.scrollLeft + event.deltaX));
 						this.scrollTop = Math.max(0, Math.min(maxY, this.scrollTop + event.deltaY));
 					}
-		
+
 					if(slideFinished == false && locking_swipe == true){
-			
+
 						LockingListener(event);
 						return;
-						
+
 					}
 
 					if(slideFinished == true && event.deltaY < -verticalSwipeSpeed){
-			
+
 						locking_swipe = true;
-						slideFinished = false;	
-						
+						slideFinished = false;
+
 						setTimeout(function(){
 							slideFinished = true;
 							locking_swipe = false;
 						}, 2000)
-						
+
 						return;
 					}
-					
+
 				})
-									
+
 			});
 			}
         }
-		
+
 }
 
 function getTracks(done) {
@@ -338,7 +338,7 @@ function simulateDriving() {
         // Update Speed
         $('#speed').html(speedValue);
         $('#map-dashboard-speed').html(speedValue + ' ' + selectedCarData.features[i].properties.phenomenons.Speed.unit);
-       
+
         $('#map-dashboard-speed-average').html('Ø ' + Math.floor(calculateAverageSpeed(speedValue)) + ' ' + selectedCarData.features[i].properties.phenomenons.Speed.unit);
         updateSpeedDisplay(speedValue);
 
@@ -355,25 +355,25 @@ function simulateDriving() {
         // Update CO2 Chart
 
         updateCO2Chart(selectedCarData.features[i].properties.phenomenons.CO2.value, i);
-		
+
 		updateFuelChart(selectedCarData.features[i].properties.phenomenons.Consumption.value,i)
-        
-        
+
+
         // Update consumption
 
         $('#map-dashboard-consumption').html(selectedCarData.features[i].properties.phenomenons.Consumption.value.toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
         $('#map-dashboard-consumption-average').html('Ø ' + calculateAverageConsumption(selectedCarData.features[i].properties.phenomenons.Consumption.value).toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
-        
+
         $('#fuelchart-fuel').html(selectedCarData.features[i].properties.phenomenons.Consumption.value.toFixed(2) + ' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
         $('#fuelchart-fuel-average').html('Ø ' + Fuelstatistics.avg.toFixed(2)+' ' + selectedCarData.features[i].properties.phenomenons.Consumption.unit);
 
         // Update Gaspedal
         // updateGasPedal(selectedCarData.features[i].properties.phenomenons["Throttle Position"].value);
-        
+
 		// Update map
-        
+
         updateMap(i);
-        
+
         if (i == selectedCarData.features.length - 1) {
             // Simulation is finished
             $('#statustext').html('Simulation finished.');
@@ -408,7 +408,7 @@ function simulateDriving() {
 }
 
 function updateMap(i){
-	
+
 	var lat = selectedCarData.features[i].geometry.coordinates[1];
         var lon = selectedCarData.features[i].geometry.coordinates[0];
 
@@ -430,7 +430,7 @@ function updateMap(i){
         }
 
         mymap.panTo(pos);
-	
+
 }
 
 function updateSpeedDisplay(value) {
@@ -466,34 +466,34 @@ function updateCo2Display(value) {
 }
 
 function updateCO2Chart(value, i) {
-	
+
 	AvgData_CO2.push([i,CO2statistics.avg]);
 
 	CO2Chartdata.push([i,value]);
 
 	var newPlotData = [ { label: "CO2 Emission in kg/h", data: CO2Chartdata, color:'#A9CF54' },
 						{ label: "Avg Emission of all Users", data: AvgData_CO2, color:'04BFBF' } ]
-    
-	CO2Chart.setData(newPlotData);    
+
+	CO2Chart.setData(newPlotData);
 	CO2Chart.setupGrid();
 	CO2Chart.draw();
 
 }
 
 function updateFuelChart(value, i) {
-	
+
 	// TODO: Find out avg of fuel consumption
  	AvgData_Fuel.push([i,Fuelstatistics.avg]);
-	
+
  	FuelChartdata.push([i,value]);
 
 	var newFuelData = [ { label: "Fuel Consumption in l/h", data: FuelChartdata, color:'#F7E967' },
 						{ label: "Avg Consumption of all Users", data: AvgData_Fuel, color:'04BFBF' } ]
-    
-	FuelChart.setData(newFuelData);    
+
+	FuelChart.setData(newFuelData);
 	FuelChart.setupGrid();
 	FuelChart.draw();
-	
+
 }
 
 
