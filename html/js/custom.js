@@ -7,7 +7,7 @@
 'use strict'
 
 var swipeSpeed = 50;
-var verticalSwipeSpeed = 10;
+var verticalSwipeSpeed = 20;
 var updateInterval = 5000; // in milliseconds
 
 var receivedTracks;
@@ -63,8 +63,9 @@ $(document).ready(function() {
 
     $('#fullpage').fullpage({
         // 		anchors: ['firstPage', 'secondPage', '3rdPage'],		// Can be used to rewrite the URL
-        sectionsColor: ['#3c3c3c', '#DE564B', '#EAE1C0'],
+//         sectionsColor: ['#3c3c3c', '#DE564B', '#EAE1C0'],
         slidesNavigation: true,
+        controlArrows: false,
         afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex) { // Callback function to let the next swipe through
             slideFinished = true;
         }
@@ -149,7 +150,7 @@ $(document).ready(function() {
 			slideFinished = false;	
 						
 			setTimeout(function(){
-				console.log('times over')
+				//console.log('times over')
 				slideFinished = true;
 				locking_swipe = false;
 			}, 2000)
@@ -205,7 +206,6 @@ $(document).ready(function() {
     });
 
 });
-
 
 function LockingListener(givenEvent){
 			
@@ -432,7 +432,6 @@ function updateMap(i){
         mymap.panTo(pos);
 	
 }
-
 
 function updateSpeedDisplay(value) {
 

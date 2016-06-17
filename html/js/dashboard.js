@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   // circle on dashboard
   $('#speed_circle').circleProgress({
-  			size: 300,
+  			size: 100,
   			value: 0.0,
   			startAngle:1.5*Math.PI,
   			fill: { color: '#a3fff4' }
@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 
   $('#co2_circle').circleProgress({
-  			size: 300,
+  			size: 100,
   			value: 0.0,
   			startAngle:1.5*Math.PI,
   			fill:{ image: "/img/co2_gradient.png"} 

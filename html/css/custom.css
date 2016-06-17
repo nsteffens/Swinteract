@@ -4,42 +4,58 @@
 
 */
 
+
+.fp-enabled{
+	
+	background-color: transparent;
+	
+}
+
+h2{
+	color: white;
+}
+
+h3{
+	
+	color: white;
+	
+}
+
+#fp-nav ul li a span, .fp-slidesNav ul li a span {
+	
+	background: white;
+	
+}
+
 .section{
 	font-family: 'Open Sans';
 	text-align:center;
-	color: #fcfcfc;
+/* 	color: #fcfcfc; */
 }
 
 .dashboard-circle {
 	position: relative;
-	width: 300px;
-	margin: 100px;
+/* 	width: 300px; */
+/* 	margin: 100px; */
 }
 
-.fp-enabled{
-	
-	background-color: black;
-	
-}
 
 .overlay {
 	top:50%;
 	vertical-align: middle;
 	text-align:center;
-
 	display:flex;
 }
 
 #CO2Chart{
 
-	margin: 5%;
-	height: 60%;
+	height: 40%;
 }
 
 #FuelChart{
 
 	margin: 5%;
-	height: 60%;
+	height: 40%;
 }
 
 #speed{
@@ -77,8 +93,8 @@
 
 .dashboard-element {
 	display: inline-block;
-	margin-left: 100px;
-	margin-right: 100px;
+	margin-left: 50px;
+	margin-right: 50px;
 }
 
 
