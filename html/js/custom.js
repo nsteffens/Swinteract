@@ -82,7 +82,13 @@ $(document).ready(function() {
                               monotonicFit: true
                      }
 			},
+			grid: {
+				borderColor: '#CAFCD8',
+			},
 			xaxis: {
+				show: false
+			},
+			yaxis: {
 				show: false
 			}
 	});
@@ -98,7 +104,13 @@ $(document).ready(function() {
                               monotonicFit: true
                      }
 			},
+			grid: {
+				borderColor: '#CAFCD8',
+			},
 			xaxis: {
+				show: false
+			},
+			yaxis: {
 				show: false
 			}
 	});
@@ -163,12 +175,14 @@ $(document).ready(function() {
         if (slideFinished == true && event.deltaX > swipeSpeed) {
             slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
             $.fn.fullpage.moveSlideRight();
+            return;
         }
 
         //SWIPE LEFT
         if (slideFinished == true && event.deltaX < -swipeSpeed) {
             slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
             $.fn.fullpage.moveSlideLeft();
+            return;
         }
 
 
@@ -471,8 +485,8 @@ function updateCO2Chart(value, i) {
 
 	CO2Chartdata.push([i,value]);
 
-	var newPlotData = [ { label: "CO2 Emission in kg/h", data: CO2Chartdata, color:'#A9CF54' },
-						{ label: "Avg Emission of all Users", data: AvgData_CO2, color:'04BFBF' } ]
+	var newPlotData = [ { label: "CO2 Emission (kg/h)", data: CO2Chartdata, color:'#A9CF54' },
+						{ label: "Global Average", data: AvgData_CO2, color:'#04BFBF' } ]
 
 	CO2Chart.setData(newPlotData);
 	CO2Chart.setupGrid();
@@ -482,37 +496,16 @@ function updateCO2Chart(value, i) {
 
 function updateFuelChart(value, i) {
 
-	// TODO: Find out avg of fuel consumption
  	AvgData_Fuel.push([i,Fuelstatistics.avg]);
 
  	FuelChartdata.push([i,value]);
 
-	var newFuelData = [ { label: "Fuel Consumption in l/h", data: FuelChartdata, color:'#F7E967' },
-						{ label: "Avg Consumption of all Users", data: AvgData_Fuel, color:'04BFBF' } ]
+	var newFuelData = [ { label: "Fuel Consumption (l/h)", data: FuelChartdata, color:'#F7E967' },
+						{ label: "Global Average", data: AvgData_Fuel, color:'#04BFBF' } ]
 
 	FuelChart.setData(newFuelData);
 	FuelChart.setupGrid();
 	FuelChart.draw();
-
-}
-
-
-function updateGasPedal(value) {
-
-    /*
-var skillBar = $('#pedalbox')
-    var skillVal = skillBar.attr("data-progress");
-
-*/
-
-    $('#gaspedal').html(Math.floor(value) + '%');
-
-
-    /*
-skillBar.animate({
-        height: value
-    }, 1500);
-*/
 
 }
 

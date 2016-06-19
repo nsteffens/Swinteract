@@ -8,7 +8,7 @@ $(document).ready(function() {
   			size: 100,
   			value: 0.0,
   			startAngle:1.5*Math.PI,
-  			fill: { color: '#a3fff4' }
+  			fill: { color: '#04BFBF' }
   	}).on('circle-animation-progress', function(event, progress, stepValue) {
       $("#speedStrong").html(parseInt(100 * stepValue) + '<i>%</i>');
   });
