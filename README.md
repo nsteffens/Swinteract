@@ -14,12 +14,13 @@ Swinteract is a Headup-Display Simulation powered by node.js, HTML5, JavaScript 
 Swinteract uses a number of open source projects to work properly:
 
 * [node.js] - evented I/O for the backend
-* [Bower](https://bower.io) - package manager for the web dependencies 
+* [Bower] - package manager for the web dependencies 
 * [Express] - fast node.js network app framework
-* [fullPage.js](https://github.com/alvarotrigo/fullPage.js) - plugin to create full-screen scrolling stites 
-* [flot.js](http://www.flotcharts.org) - framework to create (realtime) charts
-* [leaflet](http://leafletjs.com) - framework to create interactive maps
+* [fullPage.js] - plugin to create full-screen scrolling stites 
+* [flot.js] - framework to create (realtime) charts
+* [leaflet] - framework to create interactive maps
 * [jQuery] - duh
+* [jQuery-circle-progress] - nice plugin to do circle progress bars via jQuery
 
 ### Installation
 
@@ -58,3 +59,9 @@ MIT
    [jQuery]: <http://jquery.com>
    [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
    [express]: <http://expressjs.com>
+   [jQuery-circle-progress]: <https://github.com/kottenator/jquery-circle-progress>
+   [leaflet]: <http://leafletjs.com>
+   [flot.js]: <http://www.flotcharts.org>
+   [fullPage.js]: <https://github.com/alvarotrigo/fullPage.js>
+   [Bower]: <https://bower.io>
+   
