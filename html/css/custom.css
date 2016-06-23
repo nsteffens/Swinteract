@@ -9,9 +9,15 @@ body {
 }
 
 .fp-enabled{
+	
+	background-color: rgba(0, 0, 0, 0.5);
 
-	background-color: transparent;
+}
 
+.fp-slidesNav bottom ul li a span {	/* Change color of the slidesnav markers*/
+	
+	color: black !important;
+	
 }
 
 h2{
@@ -87,12 +93,12 @@ h3{
 }
 
 #map {
-	height: 75%;
+	height: 50%;
 }
 
 #map-dashboard {
-	height: 25%;
-	color: white;
+	height: 50%;
+	color: #CAFCD8;
 }
 
 .dashboard-element {

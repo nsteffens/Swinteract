@@ -116,10 +116,9 @@ $(document).ready(function() {
 	});
 
     mymap = L.map('map').setView([51.95, 7.55], 15);
-
+		
     L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+        maxZoom: 19
     }).addTo(mymap);
 
     // disable mouse scrollWheelZoom on map
