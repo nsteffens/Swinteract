@@ -1,0 +1,99 @@
+<html>
+
+<head>
+
+	<script src="/jquery/dist/jquery.min.js"></script>
+
+
+</head>
+<body>
+<video autoplay loop id="bgvid">
+    <source src="KappenbergerDamm_Morning.MP4" type="video/mp4">
+</video>
+
+
+
+<iframe id="hudframe" src="display.html" allowtransparency="true" height="394px" width="700px"></iframe>
+</body>
+<style>
+
+	body {
+		cursor: none;
+	}
+
+
+	video#bgvid {
+	    position: fixed;
+	    top: 50%;
+	    left: 50%;
+	    min-width: 100%;
+	    min-height: 100%;
+	    width: auto;
+	    height: auto;
+	    z-index: -100;
+	    -ms-transform: translateX(-50%) translateY(-50%);
+	    -moz-transform: translateX(-50%) translateY(-50%);
+	    -webkit-transform: translateX(-50%) translateY(-50%);
+	    transform: translateX(-50%) translateY(-50%);
+	}
+
+
+	iframe {
+
+		border: 0;
+		background-color: transparent;
+		float: right;
+		padding-top: 450px;
+	}
+
+
+</style>
+
+<script>
+
+
+	$('body')[0].addEventListener('mousewheel', function(event){
+
+		event.preventDefault();
+
+		if(document.getElementById('hudframe').contentWindow.slideFinished == false && document.getElementById('hudframe').contentWindow.locking_swipe == true){
+
+			document.getElementById('hudframe').contentWindow.LockingListener(event);
+			return;
+		}
+
+		if(document.getElementById('hudframe').contentWindow.slideFinished == true && event.deltaY < -document.getElementById('hudframe').contentWindow.verticalSwipeSpeed){
+
+
+			document.getElementById('hudframe').contentWindow.locking_swipe = true;
+			document.getElementById('hudframe').contentWindow.slideFinished = false;
+
+			setTimeout(function(){
+				//console.log('times over')
+				document.getElementById('hudframe').contentWindow.slideFinished = true;
+				document.getElementById('hudframe').contentWindow.locking_swipe = false;
+			}, 2000)
+
+		}
+
+		//SWIPE RIGHT
+        if (document.getElementById('hudframe').contentWindow.slideFinished == true && event.deltaX > document.getElementById('hudframe').contentWindow.swipeSpeed) {
+            document.getElementById('hudframe').contentWindow.slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
+            document.getElementById('hudframe').contentWindow.$.fn.fullpage.moveSlideRight();
+        }
+
+        //SWIPE LEFT
+        if (document.getElementById('hudframe').contentWindow.slideFinished == true && event.deltaX < -document.getElementById('hudframe').contentWindow.swipeSpeed) {
+            document.getElementById('hudframe').contentWindow.slideFinished = false; // We will set it back to true when the afterSlideLoad callback is fired
+            document.getElementById('hudframe').contentWindow.$.fn.fullpage.moveSlideLeft();
+        }
+
+
+
+
+	}, false)
+
+</script>
+
+
+</html>

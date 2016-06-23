@@ -4,30 +4,67 @@
 
 */
 
+body {
+	cursor: none;
+}
+
+.fp-enabled{
+	
+	background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+.fp-slidesNav bottom ul li a span {	/* Change color of the slidesnav markers*/
+	
+	color: black !important;
+	
+}
+
+h2{
+	color: #CAFCD8;
+}
+
+h3{
+
+	color: #CAFCD8;
+
+}
+
+#fp-nav ul li a span, .fp-slidesNav ul li a span {
+
+	background: white;
+
+}
+
 .section{
 	font-family: 'Open Sans';
 	text-align:center;
-	color: #fcfcfc;
+/* 	color: #fcfcfc; */
 }
 
 .dashboard-circle {
 	position: relative;
-	width: 300px;
-	margin: 100px;
+/* 	width: 300px; */
+/* 	margin: 100px; */
 }
+
 
 .overlay {
 	top:50%;
 	vertical-align: middle;
 	text-align:center;
-
 	display:flex;
 }
 
 #CO2Chart{
 
+	height: 40%;
+}
+
+#FuelChart{
+
 	margin: 5%;
-	height: 60%;
+	height: 40%;
 }
 
 #speed{
@@ -56,15 +93,16 @@
 }
 
 #map {
-	height: 75%;
+	height: 50%;
 }
 
 #map-dashboard {
-	height: 25%;
+	height: 50%;
+	color: #CAFCD8;
 }
 
-.map-dashboard-element {
+.dashboard-element {
 	display: inline-block;
-	margin-left: 100px;
-	margin-right: 100px;
+	margin-left: 50px;
+	margin-right: 50px;
 }
